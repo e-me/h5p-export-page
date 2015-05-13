@@ -16,5 +16,12 @@
     {
       "path": "export-page.css"
     }
+  ],
+  "preloadedDependencies": [
+    {
+      "machineName": "docxgenJS",
+      "majorVersion": 1,
+      "minorVersion": 0
+    }
   ]
 }

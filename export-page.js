@@ -4,7 +4,7 @@ var H5P = H5P || {};
 /**
  * Class responsible for creating an export page
  */
-H5P.JoubelExportPage = (function ($) {
+H5P.ExportPage = (function ($) {
 
   var isMobile = {
     Android: function () {
@@ -38,7 +38,7 @@ H5P.JoubelExportPage = (function ($) {
    * @param {String} templateName The template docx file in the format "templatename.docx"
    * @param {Object} templateContent Object containing template content
    */
-  function JoubelExportPage(header, $body, selectAllTextLabel, exportTextLabel, templateLibraryFolder, templateName, templateContent) {
+  function ExportPage(header, $body, selectAllTextLabel, exportTextLabel, templateLibraryFolder, templateName, templateContent) {
     var self = this;
 
     this.templateLibraryFolder = templateLibraryFolder;
@@ -109,7 +109,7 @@ H5P.JoubelExportPage = (function ($) {
   /**
    * Initialize exit export page button
    */
-  JoubelExportPage.prototype.initExitExportPageButton = function () {
+  ExportPage.prototype.initExitExportPageButton = function () {
     var self = this;
     // Exit export page event
     $('.joubel-export-page-close', self.$inner).click(function () {
@@ -129,7 +129,7 @@ H5P.JoubelExportPage = (function ($) {
   /**
    * Initialize export button interactions
    */
-  JoubelExportPage.prototype.initExportButton = function () {
+  ExportPage.prototype.initExportButton = function () {
     var self = this;
     // Export document button event
     self.$exportButton = $('.joubel-exportable-export-button', self.$inner).click(function () {
@@ -149,7 +149,7 @@ H5P.JoubelExportPage = (function ($) {
   /**
    * Initialize select all text button interactions
    */
-  JoubelExportPage.prototype.initSelectAllTextButton = function () {
+  ExportPage.prototype.initSelectAllTextButton = function () {
     var self = this;
     // Select all text button event
     self.$selectAllTextButton = $('.joubel-exportable-copy-button', self.$inner).click(function () {
@@ -168,7 +168,7 @@ H5P.JoubelExportPage = (function ($) {
   /**
    * Initializes listener for resize and performs initial resize when rendered
    */
-  JoubelExportPage.prototype.initResizeFunctionality = function () {
+  ExportPage.prototype.initResizeFunctionality = function () {
     var self = this;
 
     // Listen for window resize
@@ -186,7 +186,7 @@ H5P.JoubelExportPage = (function ($) {
    * Select all text in container
    * @param {jQuery} $container Container containing selected text
    */
-  JoubelExportPage.prototype.selectText = function ($container) {
+  ExportPage.prototype.selectText = function ($container) {
     var doc = document;
     var text = $container.get(0);
     var range;
@@ -209,7 +209,7 @@ H5P.JoubelExportPage = (function ($) {
    * Save html string to file
    * @param {string} html html string
    */
-  JoubelExportPage.prototype.saveText = function (html) {
+  ExportPage.prototype.saveText = function (html) {
     var self = this;
 
     if (this.templateLibraryFolder === undefined || this.templateName === undefined) {
@@ -250,7 +250,7 @@ H5P.JoubelExportPage = (function ($) {
    * @param {string} html Html content
    * @returns {string} html embedded content
    */
-  JoubelExportPage.prototype.createDocContent = function (html) {
+  ExportPage.prototype.createDocContent = function (html) {
     // Create HTML:
     // me + ta and other hacks to avoid that new relic injects script...
     return '<ht' + 'ml><he' + 'ad><me' + 'ta charset="UTF-8"></me' + 'ta></he' + 'ad><bo' + 'dy>' + html + '</bo' + 'dy></ht' + 'ml>';
@@ -259,7 +259,7 @@ H5P.JoubelExportPage = (function ($) {
   /**
    * Responsive resize function
    */
-  JoubelExportPage.prototype.resize = function () {
+  ExportPage.prototype.resize = function () {
     var self = this;
     var $innerTmp = self.$inner.clone()
       .css('position', 'absolute')
@@ -300,7 +300,7 @@ H5P.JoubelExportPage = (function ($) {
   /**
    * Calculates width of header elements
    */
-  JoubelExportPage.prototype.calculateHeaderThreshold = function ($container, margin) {
+  ExportPage.prototype.calculateHeaderThreshold = function ($container, margin) {
     var staticPadding = 1;
 
     if (margin === undefined || isNaN(margin)) {
@@ -321,5 +321,5 @@ H5P.JoubelExportPage = (function ($) {
     return dynamicThreshold + margin + staticPadding;
   };
 
-  return JoubelExportPage;
+  return ExportPage;
 }(H5P.jQuery));

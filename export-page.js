@@ -221,8 +221,7 @@ H5P.ExportPage = (function ($) {
       });
       saveAs(blob, 'exported-text.doc');
     } else {
-      var test2 = H5P.getLibraryPath(this.templateLibraryFolder);
-      //var test3 = H5P.getPath();
+      var libraryPath = H5P.getLibraryPath(this.templateLibraryFolder);
 
       var loadFile = function (url, callback) {
         JSZipUtils.getBinaryContent(url, function (err, data) {
@@ -230,12 +229,12 @@ H5P.ExportPage = (function ($) {
         });
       };
 
-      loadFile(test2 + '/' + self.templateName, function (err, content) {
+      loadFile(libraryPath + '/' + self.templateName, function (err, content) {
         var doc = new Docxgen(content);
         if (self.templateContent !== undefined) {
           doc.setData(self.templateContent); //set the templateVariables
         }
-        doc.render(); //apply them (replace all occurences of {first_name} by Hipp, ...)
+        doc.render(); //apply them
         var out = doc.getZip().generate({type: "blob"}); //Output the document using Data-URI
         saveAs(out, "exported-text.docx");
       });

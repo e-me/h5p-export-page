@@ -143,8 +143,8 @@
 }
 
 /* Responsive button margins */
-.joubel-exportable-export-button:before,
-.joubel-exportable-copy-button:before {
+.joubel-create-document.responsive .joubel-exportable-export-button:before,
+.joubel-create-document.responsive .joubel-exportable-copy-button:before {
   margin-right: 0;
 }
 

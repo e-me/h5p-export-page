@@ -81,12 +81,10 @@
 
 .joubel-exportable-export-button:before {
   content: "\f019";
-  margin-right: 0.5em;
 }
 
 .joubel-exportable-copy-button:before {
   content: "\f15c";
-  margin-right: 0.5em;
 }
 
 .joubel-export-page-close:before {

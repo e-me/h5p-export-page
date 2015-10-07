@@ -65,10 +65,10 @@ H5P.ExportPage = (function ($) {
       '       <span>' + header + '</span>' +
       '     </div>' +
       '     <div class="joubel-export-page-close" title="Exit" role="button" tabindex="0"></div>' +
-      '     <div class="joubel-exportable-copy-button" role="button" tabindex="0">' +
+      '     <div class="joubel-exportable-copy-button" title ="' + standardSelectAllTextLabel + '" role="button" tabindex="0">' +
       '       <span>' + standardSelectAllTextLabel + '</span>' +
       '     </div>' +
-      '     <div class="joubel-exportable-export-button" role="button" tabindex="0">' +
+      '     <div class="joubel-exportable-export-button" title="' + standardExportTextLabel + '" role="button" tabindex="0">' +
       '       <span>' + standardExportTextLabel + '</span>' +
       '     </div>' +
       '   </div>' +

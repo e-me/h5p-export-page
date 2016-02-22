@@ -152,7 +152,6 @@ H5P.ExportPage = (function ($) {
     // Select all text button event
     self.$selectAllTextButton = $('.joubel-exportable-copy-button', self.$inner).click(function () {
       self.selectText(self.$exportableArea);
-      $(this).blur();
     }).keydown(function (e) {
       var keyPressed = e.which;
       // 32 - space

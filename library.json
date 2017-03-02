@@ -5,7 +5,7 @@
   "patchVersion": 5,
   "runnable": 0,
   "machineName": "H5P.ExportPage",
-  "author": "Joubel AS",
+  "author": "Joubel",
   "license": "MIT",
   "preloadedJs": [
     {

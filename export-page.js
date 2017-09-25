@@ -4,7 +4,7 @@ var H5P = H5P || {};
 /**
  * Class responsible for creating an export page
  */
-H5P.ExportPage = (function ($) {
+H5P.ExportPage = (function ($, JoubelUI, EventDispatcher) {
 
   var isMobile = {
     Android: function () {
@@ -38,6 +38,7 @@ H5P.ExportPage = (function ($) {
    * @param {Object} templateContent Object containing template content
    */
   function ExportPage(header, $body, selectAllTextLabel, exportTextLabel, templatePath, templateContent) {
+    EventDispatcher.call(this);
     var self = this;
 
     this.templatePath = templatePath;
@@ -56,19 +57,19 @@ H5P.ExportPage = (function ($) {
     }
 
     var exportPageTemplate =
-      '<div class="joubel-create-document">' +
+      '<div class="joubel-create-document" role="dialog">' +
       ' <div class="joubel-exportable-header">' +
-      '   <div class="joubel-exportable-header-inner">' +
-      '     <div class="joubel-exportable-header-text">' +
+      '   <div class="joubel-exportable-header-inner" role="toolbar">' +
+      '     <div class="joubel-exportable-header-text" tabindex="-1">' +
       '       <span>' + header + '</span>' +
       '     </div>' +
-      '     <div class="joubel-export-page-close" title="Exit" role="button" tabindex="0"></div>' +
-      '     <div class="joubel-exportable-copy-button" title ="' + standardSelectAllTextLabel + '" role="button" tabindex="0">' +
+      '     <button class="joubel-export-page-close" title="Exit" tabindex="3"></button>' +
+      '     <button class="joubel-exportable-copy-button" title ="' + standardSelectAllTextLabel + '" tabindex="2">' +
       '       <span>' + standardSelectAllTextLabel + '</span>' +
-      '     </div>' +
-      '     <div class="joubel-exportable-export-button" title="' + standardExportTextLabel + '" role="button" tabindex="0">' +
+      '     </button>' +
+      '     <button class="joubel-exportable-export-button" title="' + standardExportTextLabel + '" tabindex="1">' +
       '       <span>' + standardExportTextLabel + '</span>' +
-      '     </div>' +
+      '     </button>' +
       '   </div>' +
       ' </div>' +
       ' <div class="joubel-exportable-body">' +
@@ -77,6 +78,9 @@ H5P.ExportPage = (function ($) {
       '</div>';
 
     this.$inner = $(exportPageTemplate);
+    this.$exportButton = this.$inner.find('.joubel-exportable-export-button');
+    this.$exportCloseButton = this.$inner.find('.joubel-export-page-close');
+    this.$exportCopyButton = this.$inner.find('.joubel-exportable-copy-button');
 
     // Replace newlines with html line breaks
     var $bodyReplacedLineBreaks = $body.replace(/(?:\r\n|\r|\n)/g, '<br />');
@@ -95,33 +99,43 @@ H5P.ExportPage = (function ($) {
 
     // Does not work on mobiles, but works on IE9
     if (isMobile.any()) {
-      self.$selectAllTextButton.remove();
+      self.$exportCopyButton.remove();
     }
 
     // Initialize resize listener for responsive design
     this.initResizeFunctionality();
-
-    return this.$inner;
   }
+
+  // Setting up inheritance
+  ExportPage.prototype = Object.create(EventDispatcher.prototype);
+  ExportPage.prototype.constructor = ExportPage;
+
+  /**
+   * Return reference to main DOM element
+   * @return {H5P.jQuery}
+   */
+  ExportPage.prototype.getElement = function () {
+    return this.$inner;
+  };
 
   /**
    * Initialize exit export page button
    */
   ExportPage.prototype.initExitExportPageButton = function () {
     var self = this;
-    // Exit export page event
-    $('.joubel-export-page-close', self.$inner).click(function () {
-      //Remove export page.
+
+    self.$exportCloseButton.on('click', function () {
+      // Remove export page.
       self.$inner.remove();
-      $(this).blur();
-    }).keydown(function (e) {
-      var keyPressed = e.which;
-      // 32 - space
-      if (keyPressed === 32) {
-        $(this).click();
-        e.preventDefault();
-      }
+      self.trigger('closed');
     });
+  };
+
+  /**
+   * Sets focus on page
+   */
+  ExportPage.prototype.focus = function () {
+    this.$exportButton.focus();
   };
 
   /**
@@ -130,16 +144,8 @@ H5P.ExportPage = (function ($) {
   ExportPage.prototype.initExportButton = function () {
     var self = this;
     // Export document button event
-    self.$exportButton = $('.joubel-exportable-export-button', self.$inner).click(function () {
+    self.$exportButton.on('click', function () {
       self.saveText(self.$exportableArea.html());
-      $(this).blur();
-    }).keydown(function (e) {
-      var keyPressed = e.which;
-      // 32 - space
-      if (keyPressed === 32) {
-        $(this).click();
-        e.preventDefault();
-      }
     });
   };
 
@@ -150,15 +156,8 @@ H5P.ExportPage = (function ($) {
   ExportPage.prototype.initSelectAllTextButton = function () {
     var self = this;
     // Select all text button event
-    self.$selectAllTextButton = $('.joubel-exportable-copy-button', self.$inner).click(function () {
+    self.$exportCopyButton.on('click', function () {
       self.selectText(self.$exportableArea);
-    }).keydown(function (e) {
-      var keyPressed = e.which;
-      // 32 - space
-      if (keyPressed === 32) {
-        $(this).click();
-        e.preventDefault();
-      }
     });
   };
 
@@ -317,4 +316,4 @@ H5P.ExportPage = (function ($) {
   };
 
   return ExportPage;
-}(H5P.jQuery));
+}(H5P.jQuery, H5P.JoubelUI, H5P.EventDispatcher));

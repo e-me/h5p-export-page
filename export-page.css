@@ -46,54 +46,47 @@
 }
 
 /* Buttons */
-.joubel-exportable-export-button,
-.joubel-exportable-copy-button,
-.joubel-export-page-close {
+.joubel-create-document .joubel-exportable-header-inner button {
   float: right;
   cursor: pointer;
-  padding: 0 1em;
+  padding: 0 1em !important;
   height: 100%;
-  border-left: 1px solid #eee;
+  border-left: 1px solid #eee !important;
   box-sizing: border-box;
   line-height: 3.5em;
+  color: #555;
 }
 
-.joubel-exportable-export-button:before,
-.joubel-exportable-copy-button:before,
-.joubel-export-page-close:before {
+.joubel-create-document .joubel-exportable-header-inner button:before {
   font-family: 'H5PFontAwesome4';
 }
 
-
 /* Hover effects on buttons */
-.joubel-exportable-export-button:hover,
-.joubel-exportable-copy-button:hover,
-.joubel-export-page-close:hover {
+.joubel-create-document .joubel-exportable-header-inner button:hover {
   color: #333;
 }
 
-.joubel-export-page-close {
+.joubel-create-document .joubel-exportable-header-inner button.joubel-export-page-close {
   position: relative;
   margin-right: 1em;
   margin-right: 1em;
   border-right: 1px solid #eee;
 }
 
-.joubel-exportable-export-button:before {
+.joubel-create-document .joubel-exportable-export-button:before {
   content: "\f019";
   margin-right: 0.5em;
 }
 
-.joubel-exportable-copy-button:before {
+.joubel-create-document .joubel-exportable-copy-button:before {
   content: "\f15c";
   margin-right: 0.5em;
 }
 
-.joubel-export-page-close:before {
+.joubel-create-document .joubel-export-page-close:before {
   content: '\f00d';
   font-size: 1.3em;
 }
-
 
 /* ----------------------------- body elements ------------------------------ */
 

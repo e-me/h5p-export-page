@@ -73,7 +73,7 @@ H5P.ExportPage = (function ($, JoubelUI, EventDispatcher) {
       '   </div>' +
       ' </div>' +
       ' <div class="joubel-exportable-body">' +
-      '   <div class="joubel-exportable-area"></div>' +
+      '   <div class="joubel-exportable-area" tabindex="0"></div>' +
       ' </div>' +
       '</div>';
 

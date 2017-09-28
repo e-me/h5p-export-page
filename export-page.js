@@ -4,7 +4,7 @@ var H5P = H5P || {};
 /**
  * Class responsible for creating an export page
  */
-H5P.ExportPage = (function ($, JoubelUI, EventDispatcher) {
+H5P.ExportPage = (function ($, EventDispatcher) {
 
   var isMobile = {
     Android: function () {
@@ -316,4 +316,4 @@ H5P.ExportPage = (function ($, JoubelUI, EventDispatcher) {
   };
 
   return ExportPage;
-}(H5P.jQuery, H5P.JoubelUI, H5P.EventDispatcher));
+}(H5P.jQuery, H5P.EventDispatcher));

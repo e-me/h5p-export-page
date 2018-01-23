@@ -32,21 +32,27 @@ H5P.ExportPage = (function ($, EventDispatcher) {
    *
    * @param {String} header Header message
    * @param {jQuery} $body The container which message dialog will be appended to
+   * @param {boolean} enableSubmit Determines whether a submit button is shown
+   * @param {String} submitTextLabel Submit button label
+   * @param {String} submitSuccessTextLabel Submit success message
    * @param {String} selectAllTextLabel Select all text button label
    * @param {String} exportTextLabel Export text button label
    * @param {String} templatePath Path to docx template
    * @param {Object} templateContent Object containing template content
    */
-  function ExportPage(header, $body, selectAllTextLabel, exportTextLabel, templatePath, templateContent) {
+  function ExportPage(header, $body, enableSubmit, submitTextLabel, submitSuccessTextLabel, selectAllTextLabel, exportTextLabel, templatePath, templateContent) {
     EventDispatcher.call(this);
     var self = this;
+    this.enableSubmit = enableSubmit;
 
     this.templatePath = templatePath;
     this.templateContent = templateContent;
 
     // Standard labels:
-    var standardSelectAllTextLabel = 'Select all';
-    var standardExportTextLabel = 'Export text';
+    var standardSelectAllTextLabel = 'Select';
+    var standardExportTextLabel = 'Export';
+    var standardSubmitTextLabel = 'Submit'
+    self.standardSubmitSuccessTextLabel = 'Your report has been successfully submitted!';
 
     if (selectAllTextLabel !== undefined) {
       standardSelectAllTextLabel = selectAllTextLabel;
@@ -54,6 +60,14 @@ H5P.ExportPage = (function ($, EventDispatcher) {
 
     if (exportTextLabel !== undefined) {
       standardExportTextLabel = exportTextLabel;
+    }
+
+    if (submitTextLabel !== undefined) {
+      standardSubmitTextLabel = submitTextLabel;
+    }
+
+    if (submitSuccessTextLabel !== undefined) {
+      self.standardSubmitSuccessTextLabel = submitSuccessTextLabel;
     }
 
     var exportPageTemplate =
@@ -70,6 +84,11 @@ H5P.ExportPage = (function ($, EventDispatcher) {
       '     <button class="joubel-exportable-export-button" title="' + standardExportTextLabel + '" tabindex="1">' +
       '       <span>' + standardExportTextLabel + '</span>' +
       '     </button>' +
+            (this.enableSubmit ?
+      '     <button class="joubel-exportable-submit-button" title="' + standardSubmitTextLabel + '" tabindex="1">' +
+      '       <span>' + standardSubmitTextLabel + '</span>' +
+      '     </button>'
+             : '') +
       '   </div>' +
       ' </div>' +
       ' <div class="joubel-exportable-body">' +
@@ -78,6 +97,8 @@ H5P.ExportPage = (function ($, EventDispatcher) {
       '</div>';
 
     this.$inner = $(exportPageTemplate);
+    this.$exportableBody = this.$inner.find('.joubel-exportable-body');
+    this.$submitButton = this.$inner.find('.joubel-exportable-submit-button');
     this.$exportButton = this.$inner.find('.joubel-exportable-export-button');
     this.$exportCloseButton = this.$inner.find('.joubel-export-page-close');
     this.$exportCopyButton = this.$inner.find('.joubel-exportable-copy-button');
@@ -89,6 +110,7 @@ H5P.ExportPage = (function ($, EventDispatcher) {
     self.$exportableArea = $('.joubel-exportable-area', self.$inner).append($bodyReplacedLineBreaks);
 
     self.initExitExportPageButton();
+    self.initSubmitButton();
     self.initExportButton();
     self.initSelectAllTextButton();
 
@@ -135,7 +157,30 @@ H5P.ExportPage = (function ($, EventDispatcher) {
    * Sets focus on page
    */
   ExportPage.prototype.focus = function () {
-    this.$exportButton.focus();
+    this.$submitButton ? this.$submitButton.focus() : this.$exportButton.focus();
+  };
+
+  /**
+   * Initialize Submit button interactions
+   */
+  ExportPage.prototype.initSubmitButton = function () {
+    var self = this;
+    // Submit document button event
+    self.$submitButton.on('click', function () {
+
+      self.$submitButton.attr('disabled','disabled');
+      self.$submitButton.addClass('joubel-exportable-button-disabled');
+
+      // Save the exported document
+      self.triggerXAPIScored(self.$exportableArea.html(), null, 'completed');
+
+      self.successDiv = $('<div/>', {
+        text: self.standardSubmitSuccessTextLabel,
+        'class': 'joubel-exportable-success-message'
+      });
+
+      self.$exportableBody.prepend(self.successDiv);
+    });
   };
 
   /**
@@ -234,9 +279,6 @@ H5P.ExportPage = (function ($, EventDispatcher) {
         saveAs(out, "exported-text.docx");
       });
     }
-
-
-
   };
 
   /**
@@ -280,7 +322,7 @@ H5P.ExportPage = (function ($, EventDispatcher) {
 
     // Determine if view should have no title
     headerWidth = $headerInner.width();
-    var dynamicRemoveTitleThreshold = this.calculateHeaderThreshold($innerTmp, leftMargin);
+    var dynamicRemoveTitleThreshold = this.calculateHeaderThreshold($innerTmp, (leftMargin + rightMargin));
 
     if (headerWidth <= dynamicRemoveTitleThreshold) {
       self.$inner.addClass('no-title');
@@ -302,12 +344,14 @@ H5P.ExportPage = (function ($, EventDispatcher) {
     }
 
     // Calculate elements width
+    var $submitButtonTmp = $('.joubel-exportable-submit-button', $container);
     var $exportButtonTmp = $('.joubel-exportable-export-button', $container);
     var $selectTextButtonTmp = $('.joubel-exportable-copy-button', $container);
     var $removeDialogButtonTmp = $('.joubel-export-page-close', $container);
     var $titleTmp = $('.joubel-exportable-header-text', $container);
 
-    var dynamicThreshold = $exportButtonTmp.outerWidth() +
+    var dynamicThreshold = $submitButtonTmp.outerWidth() +
+      $exportButtonTmp.outerWidth() +
       $selectTextButtonTmp.outerWidth() +
       $removeDialogButtonTmp.outerWidth() +
       $titleTmp.outerWidth();

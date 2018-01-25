@@ -172,7 +172,8 @@ H5P.ExportPage = (function ($, EventDispatcher) {
       self.$submitButton.addClass('joubel-exportable-button-disabled');
 
       // Save the exported document
-      self.triggerXAPIScored(self.$exportableArea.html(), null, 'completed');
+      // self.triggerXAPIScored(self.$exportableArea.html(), null, 'completed');
+      self.trigger('submitted', self.$exportableArea.html());
 
       self.successDiv = $('<div/>', {
         text: self.standardSubmitSuccessTextLabel,

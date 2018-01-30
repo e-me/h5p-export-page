@@ -175,12 +175,12 @@ H5P.ExportPage = (function ($, EventDispatcher) {
       // documentation tool level
       self.trigger('submitted');
 
-      self.successDiv = $('<div/>', {
+      self.$successDiv = $('<div/>', {
         text: self.standardSubmitSuccessTextLabel,
         'class': 'joubel-exportable-success-message'
       });
 
-      self.$exportableBody.prepend(self.successDiv);
+      self.$exportableBody.prepend(self.$successDiv);
 
       self.$exportableBody.addClass('joubel-has-success');
     });
@@ -317,11 +317,20 @@ H5P.ExportPage = (function ($, EventDispatcher) {
     if (headerWidth <= dynamicRemoveLabelsThreshold) {
       self.$inner.addClass('responsive');
       $innerTmp.addClass('responsive');
+
+      if (self.$successDiv) {
+        self.$successDiv.addClass('joubel-narrow-view');
+      }
     } else {
       self.$inner.removeClass('responsive');
       $innerTmp.remove();
+
+      if (self.$successDiv) {
+        self.$successDiv.removeClass('joubel-narrow-view');
+      }
       return;
     }
+
 
     // Determine if view should have no title
     headerWidth = $headerInner.width();

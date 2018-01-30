@@ -124,6 +124,11 @@
   color: #20603d;
 }
 
+.joubel-exportable-success-message.joubel-narrow-view {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 .joubel-create-document .joubel-exportable-header-inner button:disabled {
   color: #A8A8A8;
   cursor: default;

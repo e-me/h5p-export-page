@@ -181,6 +181,8 @@ H5P.ExportPage = (function ($, EventDispatcher) {
       });
 
       self.$exportableBody.prepend(self.successDiv);
+
+      self.$exportableBody.addClass('joubel-has-success');
     });
   };
 
